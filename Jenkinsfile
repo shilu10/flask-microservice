@@ -3,9 +3,6 @@ pipeline{
     stages{
        
         stage("started multibuild"){
-             when {
-                branch 'PR-*'
-            }
             
             steps{
                 echo "started the multibranch"
