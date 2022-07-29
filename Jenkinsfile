@@ -10,8 +10,8 @@ pipeline{
             }
         stage("Change Directory"){
             steps{
-                cd creation_page
-                echo "changed the directory successfully"
+                
+                echo "changed th"
                 }
             }
         stage("build"){
