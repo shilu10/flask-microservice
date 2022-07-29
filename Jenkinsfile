@@ -17,7 +17,7 @@ pipeline{
         }
 	stage("build"){
 		steps{
-			echo "Running the build"
+			echo "Running the build for "
 		}
 	}
     stage("end step"){
