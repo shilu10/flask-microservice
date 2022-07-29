@@ -1,10 +1,11 @@
 pipeline{
     agent {dockerfile true}
     stages{
-        when {
+       
+        stage("started multibuild"){
+             when {
                 branch 'PR-*'
             }
-        stage("started multibuild"){
             
             steps{
                 echo "started the multibranch"
