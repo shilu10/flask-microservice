@@ -1,18 +1,28 @@
 pipeline{
     agent {dockerfile true}
     stages{
+       
+        stage("started multibuild"){
+            
+            steps{
+                echo "started the multibranch"
+                }
+            }
         stage("Change Directory"){
             steps{
                 cd creation_page
+                echo "changed the directory successfully"
+                }
+            }
+        stage("build"){
+            steps{
+                echo "Running the build for "
             }
         }
-	stage("build"){
-		steps{
-			docker-compose build .
-		}
-	}
         stage("end step"){
-            echo "compeleted successfully"
+            steps{
+                echo "compeleted successfully and ended"
+            }
         }
-    }
+}
 }
