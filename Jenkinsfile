@@ -1,6 +1,11 @@
 pipeline{
     agent {dockerfile true}
     stages{
+	stage{
+	steps{
+		echo "started the multibranch"
+		}
+	}
         stage("Change Directory"){
             steps{
                 cd creation_page
