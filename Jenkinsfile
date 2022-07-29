@@ -7,7 +7,7 @@ pipeline{
             }
         }
 	stage("build"){
-		step{
+		steps{
 			docker-compose build .
 		}
 	}
