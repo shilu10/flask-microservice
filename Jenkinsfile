@@ -8,5 +8,8 @@ pipeline{
                 docker-compose up
             }
         }
+        stage("end"){
+            echo "compeleted successfully"
+        }
     }
 }
