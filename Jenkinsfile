@@ -1,7 +1,7 @@
 pipeline{
     agent {dockerfile true}
     stages{
-	stage{
+	stage("started multibuild"){
 	steps{
 		echo "started the multibranch"
 		}
