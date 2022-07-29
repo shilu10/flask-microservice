@@ -1,0 +1,43 @@
+version: "3"
+services:
+  db_host1: 
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: main_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
+
+    volumes:
+      - .dbdata:/var/lib/mysql
+    ports:
+      - 33007:3306
+
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile 
+    volumes: 
+      - .:/app
+    ports:
+      - "10001:10001"
+    links:
+      - "db_host1:db_host1"
+    depends_on:
+      - db_host1
+    restart: always
+  
+  queue: 
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes: 
+      - .:/app
+    depends_on: 
+      - db_host1
+    command: python3 -u consumer.py
+    restart: always
+     
+    
+  
