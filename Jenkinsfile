@@ -1,16 +1,13 @@
 pipeline{
     agent {dockerfile true}
     stages{
-        stage("Change Directory"){
+        stage("build"){
             steps{
                 cd creation_page
+                docker-compose build
+                docker-compose up
             }
         }
-	stage("build"){
-		steps{
-			docker-compose build .
-		}
-	}
         stage("end step"){
             echo "compeleted successfully"
         }
