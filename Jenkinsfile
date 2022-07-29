@@ -1,10 +1,15 @@
 pipeline{
-	agent any 
-	stages{
-		stage("build"){
-			steps{
-				echo "hi"
-			}
-		}
-	}	
+    agent {dockerfile true}
+    stages{
+        stage("build"){
+            steps{
+                cd creation_page
+                docker-compose build
+                docker-compose up
+            }
+        }
+        stage("end step"){
+            echo "compeleted successfully"
+        }
+    }
 }
