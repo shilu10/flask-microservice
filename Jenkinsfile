@@ -10,7 +10,7 @@ pipeline{
             }
         stage("Change Directory"){
             steps{
-                
+                ls
                 echo "changed th"
                 }
             }
