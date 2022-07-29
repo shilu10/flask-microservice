@@ -3,7 +3,7 @@ pipeline{
     stages{
         stage("Tooling"){
             steps{
-                    sh"""
+                    sh """
                         docker version
                         docker-compose version        
                     """
@@ -17,6 +17,7 @@ pipeline{
                     docker-compose up
                 """
             }
+        }
        
         stage("end step"){
             steps{
@@ -25,4 +26,4 @@ pipeline{
         }
 }
 }
-}
+
