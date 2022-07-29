@@ -21,7 +21,9 @@ pipeline{
 		}
 	}
     stage("end step"){
-        echo "compeleted successfully"
+        steps{
+            echo "compeleted successfully"
+        }
     }
 }
 }
