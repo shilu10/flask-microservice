@@ -2,25 +2,26 @@ pipeline{
     agent {dockerfile true}
     stages{
 	stage("started multibuild"){
-    when {
-            branch 'PR-*'
+        when {
+                branch 'PR-*'
+            }
+        steps{
+            echo "started the multibranch"
+            }
         }
-	steps{
-		echo "started the multibranch"
-		}
-	}
-        stage("Change Directory"){
-            steps{
-                cd creation_page
+    stage("Change Directory"){
+        steps{
+            cd creation_page
+            echo "changed the directory successfully"
             }
         }
 	stage("build"){
 		steps{
-			docker-compose build 
+			echo "Running the build"
 		}
 	}
-        stage("end step"){
-            echo "compeleted successfully"
-        }
+    stage("end step"){
+        echo "compeleted successfully"
     }
+}
 }
