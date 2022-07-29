@@ -7,8 +7,9 @@ pipeline{
             }
         }
 	stage("build"){
-		docker-compose build .
-		docker-compose up
+		steps{
+			docker-compose build .
+		}
 	}
         stage("end step"){
             echo "compeleted successfully"
