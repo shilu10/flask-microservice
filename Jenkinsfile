@@ -6,7 +6,8 @@ pipeline{
                 echo "Tooling versions: "
                 sh """
                     docker version
-                    docker-compose version        
+                    docker-compose version  
+                    cd creation_page      
                  """
                 }
             }
@@ -14,7 +15,6 @@ pipeline{
             steps{
                 echo "Started Building the project!!!"
                 sh """
-                    cd creation_page
                     docker-compose build
                     docker-compose up &
                     sleep 100
@@ -29,8 +29,7 @@ pipeline{
                     docker exec -it creation_page_backend1_1 pytest
                 """
             }
-        }
-       
+        }  
         stage("End Stage"){
             steps{
                 echo "compeleted successfully and ended"
