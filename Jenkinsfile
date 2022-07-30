@@ -2,12 +2,12 @@ pipeline{
     agent any
     stages{
         stage("Tooling"){
-            echo "Tooling versions: "
             steps{
-                    sh """
-                        docker version
-                        docker-compose version        
-                    """
+                echo "Tooling versions: "
+                sh """
+                    docker version
+                    docker-compose version        
+                 """
                 }
             }
         stage("Build Stage"){
