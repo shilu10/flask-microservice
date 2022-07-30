@@ -29,7 +29,7 @@ pipeline{
                         echo "Starting the test cases!!!"
                         sh  """
                             sleep 80
-                            docker exec -it creation_page_backend1_1 python3 -m pytest
+                            docker exec creation_page_backend1_1 python3 -m pytest
                         """
                         echo "Ended the test cases"
                     }
