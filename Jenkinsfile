@@ -2,6 +2,9 @@ pipeline{
     agent any
     stages{
         stage("Tooling"){
+            when {
+                branch 'PR-*'
+            }
             steps{
                 echo "Tooling versions: "
                 sh """
@@ -10,7 +13,10 @@ pipeline{
                  """
                 }
             }
-        stage ("Build and Testing Stage!!"){
+        stage ("Building and Testing Stages of Creation Page Microservice!!"){
+            when {
+                branch 'PR-*'
+            }
             parallel{
                 stage("Build Stage"){
                     steps{
@@ -26,22 +32,60 @@ pipeline{
                 }
                 stage("Testing Stage"){
                     steps{
-                        echo "Starting the test cases!!!"
+                        echo "Starting the Unit and Functionality test cases!!!"
                         sh  """
                             sleep 80
                             docker exec creation_page_backend1_1 python3 -m pytest
                         """
-                        echo "Ended the test cases"
+                        echo "Test Cases ran Successfully!!"
                     }
                 }  
             }
         }
-        
-        stage("End Stage"){
-            steps{
-                echo "compeleted successfully and ended"
+
+        stage ("Building and Testing Stages of Main Page Microservice!!"){
+            when {
+                branch 'PR-*'
+            }
+            parallel{
+                stage("Build Stage"){
+                    steps{
+                        echo "Started Building the project!!!"
+                        sh """
+                            cd main_page
+                            docker-compose build
+                            docker-compose up &
+                            sleep 100
+                        """
+                        echo "Build is Successful"
+                    }
+                }
+                stage("Testing Stage"){
+                    steps{
+                        echo "Starting the Unit and Functionality test cases!!!"
+                        sh  """
+                            sleep 80
+                            docker exec main_page1_1 python3 -m pytest
+                        """
+                        echo "Test cases ran successfully!!"
+                    }
+                }  
             }
         }
-}
+    }
+    post {
+        always {
+            echo 'The pipeline completed'
+            junit allowEmptyResults: true, testResults:'**/test_reports/*.xml'
+        }
+        success {                   
+            echo "Building and Testing of the application is successfull"
+        }
+        failure {
+            echo 'Build stage failed'
+            error('Stopping early…')
+        }
+      }
+
 }
 
