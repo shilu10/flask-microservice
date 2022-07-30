@@ -9,7 +9,7 @@ pipeline{
                     """
                 }
             }
-        stage("Build"){
+        stage("Build Stage"){
             steps{
                 sh """
                     cd creation_page
@@ -19,7 +19,7 @@ pipeline{
             }
         }
        
-        stage("end step"){
+        stage("End Stage"){
             steps{
                 echo "compeleted successfully and ended"
             }
