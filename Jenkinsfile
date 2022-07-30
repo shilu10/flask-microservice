@@ -19,7 +19,7 @@ pipeline{
                     docker-compose up &
                     sleep 100
                 """
-                echo "Build is Successfull"
+                echo "Build is Successful"
             }
         }
         stage("Testing Stage"){
