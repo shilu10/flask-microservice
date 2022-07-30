@@ -17,4 +17,4 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
 COPY . /app
 COPY --chown=adminuser:adminuser . /app
-CMD sleep 500s && python3 main.py
+CMD sleep 300s && python3 main.py
