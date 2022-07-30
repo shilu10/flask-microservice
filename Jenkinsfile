@@ -6,8 +6,7 @@ pipeline{
                 echo "Tooling versions: "
                 sh """
                     docker version
-                    docker-compose version  
-                    cd creation_page      
+                    docker-compose version        
                  """
                 }
             }
@@ -16,6 +15,7 @@ pipeline{
                 steps{
                     echo "Started Building the project!!!"
                     sh """
+                        cd creation_page
                         docker-compose build
                         docker-compose up &
                         sleep 100
