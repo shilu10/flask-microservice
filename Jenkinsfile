@@ -55,7 +55,7 @@ pipeline{
                             cd main_page
                             docker-compose build
                             docker-compose up &
-                            sleep 100
+                            sleep 700
                         """
                         echo "Build is Successful"
                     }
@@ -64,8 +64,8 @@ pipeline{
                     steps{
                         echo "Starting the Unit and Functionality test cases!!!"
                         sh  """
-                            sleep 80
-                            docker exec main_page1_1 python3 -m pytest
+                            sleep 500s
+                            docker exec main_page_backend_1 python3 -m pytest
                         """
                         echo "Test cases ran successfully!!"
                     }
