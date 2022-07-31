@@ -1,4 +1,4 @@
-def scannerHome = tool 'SonarScanner';
+
 pipeline{
     agent any
     stages{
@@ -15,12 +15,15 @@ pipeline{
                 }
             }
         stage('SonarQube Analysis') {
-            
-            steps{       
-                withSonarQubeEnv("sonarqube") {
-                sh "${scannerHome}/bin/sonar-scanner"
+            script{
+                def scannerHome = tool 'SonarScanner';
+                steps{       
+                    withSonarQubeEnv("sonarqube") {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                    }
                 }
             }
+            
         }
 		
         stage ("Building and Testing Stages of Creation Page Microservice!!"){
