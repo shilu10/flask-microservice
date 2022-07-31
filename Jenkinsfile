@@ -15,21 +15,22 @@ pipeline{
                 }
             }
         stage('SonarQube Analysis') {
-                steps{       
-                    withSonarQubeEnv("sonarqube_server") {
+            when {
+                branch 'PR-*'
+            }
+            steps{       
+                withSonarQubeEnv("sonarqube_server") {
                     sh "${tool 'SonarScanner'}/bin/sonar-scanner"
                     }
-                }
-           
-            
-        }
+                }        
+            }
 		
         stage ("Building and Testing Stages of Creation Page Microservice!!"){
             when {
                 branch 'PR-*'
             }
             parallel{
-                stage("Build Stage"){
+                stage("Build"){
                     steps{
                         echo "Started Building the project!!!"
                         sh """
@@ -41,7 +42,7 @@ pipeline{
                         echo "Build is Successful"
                     }
                 }
-                stage("Testing Stage"){
+                stage("Test"){
                     steps{
                         echo "Starting the Unit and Functionality test cases!!!"
                         sh  """
@@ -59,7 +60,7 @@ pipeline{
                 branch 'PR-*'
             }
             parallel{
-                stage("Build Stage"){
+                stage("Build"){
                     steps{
                         echo "Started Building the project!!!"
                         sh """
@@ -71,7 +72,7 @@ pipeline{
                         echo "Build is Successful"
                     }
                 }
-                stage("Testing Stage"){
+                stage("Test"){
                     steps{
                         echo "Starting the Unit and Functionality test cases!!!"
                         sh  """
@@ -87,6 +88,9 @@ pipeline{
     post {
         always {
             echo 'The pipeline completed'
+             always {
+                junit 'build/reports/**/*.xml'
+            }
         }
         success {                   
             echo "Building and Testing of the application is successfull"
@@ -96,6 +100,5 @@ pipeline{
             error('Stopping early…')
         }
       }
-
 }
 
