@@ -13,6 +13,13 @@ pipeline{
                  """
                 }
             }
+	stage ("SonarQube Analysis"){
+		def scannerHome = tool 'SonarScanner';
+   			 withSonarQubeEnv() {
+      			 sh "${scannerHome}/bin/sonar-scanner"
+    				}
+  			}
+		}
         stage ("Building and Testing Stages of Creation Page Microservice!!"){
             when {
                 branch 'PR-*'
