@@ -1,3 +1,4 @@
+
 pipeline{
     agent any
     stages{
@@ -13,12 +14,23 @@ pipeline{
                  """
                 }
             }
+        stage('SonarQube Analysis') {
+            when {
+                branch 'PR-*'
+            }
+            steps{       
+                withSonarQubeEnv("sonarqube_server") {
+                    sh "${tool 'SonarScanner'}/bin/sonar-scanner"
+                    }
+                }        
+            }
+		
         stage ("Building and Testing Stages of Creation Page Microservice!!"){
             when {
                 branch 'PR-*'
             }
             parallel{
-                stage("Build Stage"){
+                stage("Build"){
                     steps{
                         echo "Started Building the project!!!"
                         sh """
@@ -30,7 +42,7 @@ pipeline{
                         echo "Build is Successful"
                     }
                 }
-                stage("Testing Stage"){
+                stage("Test"){
                     steps{
                         echo "Starting the Unit and Functionality test cases!!!"
                         sh  """
@@ -38,6 +50,7 @@ pipeline{
                             docker exec creation_page_backend1_1 python3 -m pytest
                         """
                         echo "Test Cases ran Successfully!!"
+                        sh "docker-compose down"
                     }
                 }  
             }
@@ -48,7 +61,7 @@ pipeline{
                 branch 'PR-*'
             }
             parallel{
-                stage("Build Stage"){
+                stage("Build"){
                     steps{
                         echo "Started Building the project!!!"
                         sh """
@@ -60,7 +73,7 @@ pipeline{
                         echo "Build is Successful"
                     }
                 }
-                stage("Testing Stage"){
+                stage("Test"){
                     steps{
                         echo "Starting the Unit and Functionality test cases!!!"
                         sh  """
@@ -68,14 +81,18 @@ pipeline{
                             docker exec main_page_backend_1 python3 -m pytest
                         """
                         echo "Test cases ran successfully!!"
+                        sh "docker-compose down"
                     }
-                }  
+                } 
             }
         }
     }
     post {
         always {
             echo 'The pipeline completed'
+             always {
+                junit 'build/reports/**/*.xml'
+            }
         }
         success {                   
             echo "Building and Testing of the application is successfull"
@@ -85,6 +102,5 @@ pipeline{
             error('Stopping early…')
         }
       }
-
 }
 
