@@ -19,7 +19,7 @@ pipeline{
                 branch 'PR-*'
             }
             steps{       
-                withSonarQubeEnv("sonarqube_server") {
+                withSonarQubeEnv("sonarqube_cloud_server") {
                     sh "${tool 'SonarScanner'}/bin/sonar-scanner"
                     }
                 }        
@@ -93,6 +93,9 @@ pipeline{
             }
         }
         stage ("Container image scanning"){
+            when {
+                branch 'PR-*'
+            }
             steps{
                 sh """
                     echo "Started the image scanning and writing to the files"
