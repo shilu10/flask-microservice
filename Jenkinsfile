@@ -18,7 +18,7 @@ pipeline{
             
                 
                 steps{       
-                    withSonarQubeEnv("sonarqube") {
+                    withSonarQubeEnv() {
                     sh "${tool 'SonarScanner'}/bin/sonar-scanner"
                     }
                 }
