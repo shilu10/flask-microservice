@@ -92,6 +92,20 @@ pipeline{
                 } 
             }
         }
+        stage ("Container image scanning"){
+            steps{
+                sh """
+                    echo "Started the image scanning and writing to the files"
+                    trivy image main_page_backend --severity=HIGH,CRITICAL > main_page_backend.txt
+                    trivy image main_page_queue --severity=HIGH,CRITICAL > main_page_queue.txt
+                    trivy image creation_page_queue1 --severity=HIGH,CRITICAL > creation_page_queue1.txt
+                    trivy image creation_page_backend1 --severity=HIGH,CRITICAL > creation_page_backend1.txt
+                    trivy image mysql --severity=HIGH,CRITICAL > mysql.txt
+                    trivy image mysql:5.7.39 --severity=HIGH,CRITICAL > mysql:5.7.39.txt
+                    echo "Ended the image Scanning process successfully"
+                """
+            }
+        }
     }
     post {
         always {
