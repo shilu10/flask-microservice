@@ -50,7 +50,10 @@ pipeline{
                             docker exec creation_page_backend1_1 python3 -m pytest
                         """
                         echo "Test Cases ran Successfully!!"
-                        sh "docker-compose down"
+                        sh """
+                            cd creation_page
+                            docker-compose down
+                        """
                     }
                 }  
             }
@@ -81,7 +84,10 @@ pipeline{
                             docker exec main_page_backend_1 python3 -m pytest
                         """
                         echo "Test cases ran successfully!!"
-                        sh "docker-compose down"
+                        sh """
+                            cd main_page
+                            docker-compose down
+                        """
                     }
                 } 
             }
