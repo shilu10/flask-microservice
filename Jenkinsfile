@@ -24,6 +24,19 @@ pipeline{
                     }
                 }        
             }
+        
+        stage("Source Composition Analysis"){
+            when{
+                branch 'PR-*'
+            }
+            steps{
+                sh """
+                    wget https://raw.githubusercontent.com/devopssecure/webapp/master/owasp-dependency-check.sh
+                    chmod +x owasp-dependency-check.sh
+                    bash owasp-dependency-check.sh
+                """
+            }   
+        }
 		
         stage ("Building and Testing Stages of Creation Page Microservice!!"){
             when {
@@ -127,4 +140,5 @@ pipeline{
         }
       }
 }
+
 
