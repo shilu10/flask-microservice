@@ -19,7 +19,7 @@ pipeline{
                 branch 'PR-*'
             }
             steps{       
-                withSonarQubeEnv("sonarqube_cloud_server") {
+                withSonarQubeEnv("sonarqube_server") {
                     sh "${tool 'SonarScanner'}/bin/sonar-scanner"
                     }
                 }        
