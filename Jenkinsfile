@@ -87,6 +87,7 @@ pipeline{
                         sh """
                             cd main_page
                             docker-compose down
+			    echo "Docker container are successfully down"
                         """
                     }
                 } 
