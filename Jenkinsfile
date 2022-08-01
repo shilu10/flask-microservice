@@ -92,7 +92,7 @@ pipeline{
                 } 
             }
         }
-        stage ("Container image scanning"){
+        stage ("Container image scanning(SAST)"){
             when {
                 branch 'PR-*'
             }
