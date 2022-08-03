@@ -31,9 +31,13 @@ pipeline{
             }
             steps{
                 sh """
+                    echo "Started the Dependency Check"
                     wget https://raw.githubusercontent.com/devopssecure/webapp/master/owasp-dependency-check.sh
                     chmod +x owasp-dependency-check.sh
-                    bash owasp-dependency-check.sh
+                    cd creation_page
+                    bash ../owasp-dependency-check.sh
+                    cd ../main_page
+                    bash ../owasp-dependency-check.sh
                 """
             }   
         }
