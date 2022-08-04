@@ -8,7 +8,6 @@ from flask_cors import CORS
 from flask_marshmallow import Marshmallow
 from server.producer import publish
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from server.image_accessability_checker import is_image_accessable
 
 
 app = Flask(__name__)
@@ -22,7 +21,7 @@ db = SQLAlchemy(app)
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100), nullable=False)
-    image = db.Column(db.String(100), nullable=False)
+    image = db.Column(db.Text(), nullable=False)
     likes = db.Column(db.Integer)
 
     def __repr__(self):
@@ -52,8 +51,6 @@ def create():
         if request.content_type == "application/json":  
             data = json.loads(request.data)
             image = data.get("image")
-            if not is_image_accessable(image):
-                image = "" 
             new_product = Product(title = data.get("title"), image=data.get("image"), likes=0)
             db.session.add(new_product)
             product_serializer = ProductSerializer()
