@@ -110,7 +110,7 @@ pipeline{
                 sh"""
                     cd react-frontend
                     docker build -t react-app .
-                    docker run react-app &
+                    docker run -it -p 3000:3000 react-app &
                 """
             }
         }
