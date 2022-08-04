@@ -42,6 +42,18 @@ pipeline{
             }   
         }
 		
+        stage("Starting React App"){
+            when{
+                branch "PR-*"
+            }
+            steps{
+                sh"""
+                    cd react-app
+                    docker -t reactapp build .
+                    docker run reactapp
+                """
+            }
+        }
         stage ("Building and Testing Stages of Creation Page Microservice!!"){
             when {
                 branch 'PR-*'
@@ -61,18 +73,18 @@ pipeline{
                 }
                 stage("Test"){
                     steps{
-                        echo "Starting the Unit and Functionality test cases!!!"
+                        echo "Starting the Unit, Webui and Functionality test cases!!!"
                         sh  """
                             sleep 80
+                            echo "starting the selenium standlone browser in docker container"
+                            docker --net=host -d --name=chrome run selenium/standalone-chrome 
+                            echo "Started the browser successfully"
                             docker exec creation_page_backend1_1 python3 -m pytest
                         """
                         echo "Test Cases ran Successfully!!"
-                        sh """
-                            cd creation_page
-                            docker-compose down
-                        """
                     }
-                }  
+                }
+                
             }
         }
 
@@ -88,7 +100,7 @@ pipeline{
                             cd main_page
                             docker-compose build
                             docker-compose up &
-                            sleep 250
+                            sleep 100
                         """
                         echo "Build is Successful"
                     }
@@ -97,15 +109,10 @@ pipeline{
                     steps{
                         echo "Starting the Unit and Functionality test cases!!!"
                         sh  """
-                            sleep 250s
+                            sleep 80s
                             docker exec main_page_backend_1 python3 -m pytest
                         """
                         echo "Test cases ran successfully!!"
-                        sh """
-                            cd main_page
-                            docker-compose down
-			    echo "Docker container are successfully down"
-                        """
                     }
                 } 
             }
@@ -127,7 +134,18 @@ pipeline{
                 """
             }
         }
-    }
+        stage("Destroying the infra"){
+            steps{
+                 sh """
+                    cd creation_page
+                    docker-compose down
+                    cd main_page
+                    docker-compose down
+                    echo "Docker container are successfully down"
+                """
+                } 
+            }   
+        }
     post {
         always {
             echo 'The pipeline completed'
