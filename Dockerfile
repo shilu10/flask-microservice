@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 COPY tests/ /app/tests
 
-CMD sleep pytest tests/
+CMD pytest tests/
