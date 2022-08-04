@@ -149,8 +149,9 @@ pipeline{
             }
             steps{
                 sh"""
-                    echo "Started the Web UI Testing"
-                    pytest tests/
+                    echo "Started the WEBUI Testing"
+                    docker build -t pythonenv .
+                    docker run pythonenv 
                 """
             }
         }
@@ -167,6 +168,7 @@ pipeline{
                     docker-compose down
                     docker stop react-app
                     docker stop chrome
+                    docker stop pythonenv
                     echo "Docker container are successfully down"
                 """
                 } 
