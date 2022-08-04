@@ -121,7 +121,7 @@ pipeline{
             steps{
                 sh"""
                     echo "starting the selenium standlone browser in docker container"
-                    docker --net=host -d --name=chrome run selenium/standalone-chrome 
+                    docker run -d --net=host --name=browser selenium/standalone-chrome
                     echo "Started the browser successfully"
                 """
             }
