@@ -1,1 +1,1 @@
-Readme file with the diagram and the expalanation. And kuberneted
+Readme file with the diagram and the expalanation. And kubernetedd
