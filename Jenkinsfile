@@ -121,7 +121,7 @@ pipeline{
             steps{
                 sh"""
                     echo "starting the selenium standlone browser in docker container"
-                    docker run -d --net=host --name=browser selenium/standalone-chrome
+                    docker run -d --net=host selenium/standalone-chrome
                     echo "Started the browser successfully"
                 """
             }
@@ -166,9 +166,6 @@ pipeline{
                     cd ..
                     cd main_page
                     docker-compose down
-                    docker stop react-app
-                    docker stop chrome
-                    docker stop pythonenv
                     echo "Docker container are successfully down"
                 """
                 } 
