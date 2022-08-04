@@ -14,7 +14,7 @@ pipeline{
                  """
                 }
             }
-        stage('SonarQube Analysis') {
+        stage('SonarQube Analysis(SAST)') {
             when {
                 branch 'PR-*'
             }
@@ -117,7 +117,7 @@ pipeline{
                 } 
             }
         }
-        stage ("Container image scanning(SAST)"){
+        stage ("Container image scanning"){
             when {
                 branch 'PR-*'
             }
@@ -135,10 +135,14 @@ pipeline{
             }
         }
         stage("Destroying the infra"){
+            when{
+                branch 'PR-*'
+            }
             steps{
                  sh """
                     cd creation_page
                     docker-compose down
+                    cd ..
                     cd main_page
                     docker-compose down
                     echo "Docker container are successfully down"
