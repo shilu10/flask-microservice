@@ -48,7 +48,7 @@ pipeline{
             }
             steps{
                 sh"""
-                    cd react-app
+                    cd react-frontend
                     docker -t reactapp build .
                     docker run reactapp
                 """
