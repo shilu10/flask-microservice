@@ -173,7 +173,10 @@ pipeline{
         }
     post {
         always {
-            echo 'The pipeline completed'
+            echo 'The pipeline completed, So stopping all the containers'
+            sh """
+                docker ps -aq | xargs docker stop | xargs docker rm
+            """
              always {
                 junit 'build/reports/**/*.xml'
             }
