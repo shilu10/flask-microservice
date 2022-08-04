@@ -150,6 +150,7 @@ pipeline{
             steps{
                 sh"""
                     echo "Started the WEBUI Testing"
+                    cd ..
                     docker build -t python-img .
                     docker run python-img
                 """
