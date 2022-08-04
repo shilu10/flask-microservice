@@ -14,7 +14,7 @@ pipeline{
                  """
                 }
             }
-        stage('SonarQube Analysis') {
+        stage('SonarQube Analysis(SAST)') {
             when {
                 branch 'PR-*'
             }
@@ -42,18 +42,6 @@ pipeline{
             }   
         }
 		
-        stage("Starting React App"){
-            when{
-                branch "PR-*"
-            }
-            steps{
-                sh"""
-                    cd react-app
-                    docker -t reactapp build .
-                    docker run reactapp
-                """
-            }
-        }
         stage ("Building and Testing Stages of Creation Page Microservice!!"){
             when {
                 branch 'PR-*'
@@ -73,12 +61,9 @@ pipeline{
                 }
                 stage("Test"){
                     steps{
-                        echo "Starting the Unit, Webui and Functionality test cases!!!"
+                        echo "Starting the Unit, Functionality test cases!!!"
                         sh  """
                             sleep 80
-                            echo "starting the selenium standlone browser in docker container"
-                            docker --net=host -d --name=chrome run selenium/standalone-chrome 
-                            echo "Started the browser successfully"
                             docker exec creation_page_backend1_1 python3 -m pytest
                         """
                         echo "Test Cases ran Successfully!!"
@@ -117,7 +102,31 @@ pipeline{
                 } 
             }
         }
-        stage ("Container image scanning(SAST)"){
+        stage("Starting React App"){
+            when{
+                branch "PR-*"
+            }
+            steps{
+                sh"""
+                    cd react-frontend
+                    docker build -t react-app .
+                    docker run react-app &
+                """
+            }
+        }
+        stage("Starting the Selenium Grid"){
+            when{
+                branch 'PR-*'
+            }
+            steps{
+                sh"""
+                    echo "starting the selenium standlone browser in docker container"
+                    docker --net=host -d --name=chrome run selenium/standalone-chrome 
+                    echo "Started the browser successfully"
+                """
+            }
+        }
+        stage ("Container image scanning"){
             when {
                 branch 'PR-*'
             }
@@ -134,13 +143,30 @@ pipeline{
                 """
             }
         }
+        stage("WebUI Test"){
+            when{
+                branch 'PR-*'
+            }
+            steps{
+                sh"""
+                    echo "Started the Web UI Testing"
+                    pytest tests/
+                """
+            }
+        }
         stage("Destroying the infra"){
+            when{
+                branch 'PR-*'
+            }
             steps{
                  sh """
                     cd creation_page
                     docker-compose down
+                    cd ..
                     cd main_page
                     docker-compose down
+                    docker stop react-app
+                    docker stop chrome
                     echo "Docker container are successfully down"
                 """
                 } 
