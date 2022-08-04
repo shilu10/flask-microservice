@@ -149,10 +149,9 @@ pipeline{
             }
             steps{
                 sh"""
-                    pwd
                     echo "Started the WEBUI Testing"
-                    docker build -t python-img .
-                    docker run python-img
+                    pip3 install -r requirements.txt 
+                    pytest tests/
                 """
             }
         }
