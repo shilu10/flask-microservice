@@ -144,10 +144,15 @@ pipeline{
             }
         }
         stage("WebUI Test"){
-            sh"""
-                echo "Started the Web UI Testing"
-                pytest tests/
-            """
+            when{
+                branch 'PR-*'
+            }
+            steps{
+                sh"""
+                    echo "Started the Web UI Testing"
+                    pytest tests/
+                """
+            }
         }
         stage("Destroying the infra"){
             when{
