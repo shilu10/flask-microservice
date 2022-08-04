@@ -8,17 +8,17 @@ class TestBrowser(unittest.TestCase):
     options.add_argument('--ignore-certificate-errors')
     port = 4444
     driver = webdriver.Remote(
-            command_executor=f'http://20.219.112.96:{port}/wd/hub',
+            command_executor=f'http://localhost:{port}/wd/hub',
             options=options
         )   
         
     def test_home_page(self): 
-        TestBrowser.driver.get("http://20.219.112.96:3000/")
+        TestBrowser.driver.get("http://localhost:3000/")
         add_product_link = TestBrowser.driver.find_element_by_class_name("navbar-brand")
         assert add_product_link.text == "Add Product", "[+]Cannot able to get the Home Page"
     
     def test_products_panel_page(self): 
-        TestBrowser.driver.get("http://20.219.112.96:3000/products-panel")
+        TestBrowser.driver.get("http://localhost:3000/products-panel")
       #  a_tag = TestBrowser.driver.find_element_by_class_name("navbar-brand")
        # a_tag.click()
         time.sleep(10)
@@ -26,7 +26,7 @@ class TestBrowser(unittest.TestCase):
         assert home_link.text == "Home", "[+]Product Page is not accessable"
 
     def test_creating_product_with_data(self): 
-        TestBrowser.driver.get("http://20.219.112.96:3000/products-panel")
+        TestBrowser.driver.get("http://localhost:3000/products-panel")
         time.sleep(10)
         number_of_rows_before = len(TestBrowser.driver.find_elements_by_class_name("tr"))
         add_button = TestBrowser.driver.find_element_by_class_name("btn")
@@ -45,7 +45,7 @@ class TestBrowser(unittest.TestCase):
         assert number_of_rows_before + 1 == number_of_rows_after, "[+]Product creation is not working as excepted"
     
     def test_create_product_without_data(self):
-        TestBrowser.driver.get("http://20.219.112.96:3000/products-panel")
+        TestBrowser.driver.get("http://localhost:3000/products-panel")
         time.sleep(10)
         prod_add_button = TestBrowser.driver.find_element_by_class_name("btn")
         prod_add_button.click() 
@@ -58,7 +58,7 @@ class TestBrowser(unittest.TestCase):
         assert TestBrowser.driver.find_element_by_name("title"), "[+]Server Accepts the Input without any data"
 
     def test_data_consistency(self): 
-        TestBrowser.driver.get("http://20.219.112.96:3000/products-panel")
+        TestBrowser.driver.get("http://localhost:3000/products-panel")
         time.sleep(10)
         number_of_rows_before = len(TestBrowser.driver.find_elements_by_class_name("tr"))
         add_button = TestBrowser.driver.find_element_by_class_name("btn")
@@ -75,13 +75,13 @@ class TestBrowser(unittest.TestCase):
         time.sleep(10)
         number_of_rows_after = len(TestBrowser.driver.find_elements_by_class_name("tr"))
         #assert number_of_rows_before + 1 == number_of_rows_after, "[+]Product creation is not working as excepted"
-        TestBrowser.driver.get("http://20.219.112.96:3000/")
+        TestBrowser.driver.get("http://localhost:3000/")
         time.sleep(10)
         product_cols = len(TestBrowser.driver.find_elements_by_class_name("col-md-4"))
         assert product_cols == number_of_rows_after, "[+]Added Product in the product-panel, is not added in main page"
 
     def test_product_deletion(self): 
-        TestBrowser.driver.get("http://20.219.112.96:3000/products-panel")
+        TestBrowser.driver.get("http://localhost:3000/products-panel")
         time.sleep(10)
         number_of_rows_before = len(TestBrowser.driver.find_elements_by_class_name("tr"))
         del_button = TestBrowser.driver.find_element_by_class_name("deleteButton")
@@ -98,7 +98,7 @@ class TestBrowser(unittest.TestCase):
         assert number_of_rows_after == number_of_rows_before - 1, "[+]Deletion of the Product is not working"
 
  #   def test_edit_product_with_data(self): 
-  #      TestBrowser.driver.get("http://20.219.112.96:3000/products-panel")
+  #      TestBrowser.driver.get("http://localhost:3000/products-panel")
    #     time.sleep(10)
     #    add_button = TestBrowser.driver.find_element_by_class_name("btn")
      #   add_button.click()
@@ -151,7 +151,8 @@ class TestBrowser(unittest.TestCase):
             first_prod_likes_in_productspanels_page = first_prod_likes_in_productspanels_page[0]
         else: 
             first_prod_likes_in_productspanels_page = first_prod_likes_in_productspanels_page
-        assert first_prod_likes_in_productspanels_page == first_prod_number_of_likes_after and first_prod_number_of_likes_after == first_prod_number_of_likes_before + 1, "[+]Liking a product is not affecting"
+        assert first_prod_likes_in_productspanels_page == first_prod_number_of_likes_after.split(" ")[0], "[+]Liking a product is not affecting"
+
 
     def test_tear_down(self): 
         TestBrowser.driver.close()
