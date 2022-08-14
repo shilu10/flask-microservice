@@ -14,6 +14,18 @@ pipeline{
                  """
                 }
             }
+
+        stage("Starting RabbitMq Server"){
+            when{
+                branch "PR-*"
+            }
+            steps{
+                echo "Starting RabbitMQ server"
+                sh """
+                    docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 -d rabbitmq:3.10-management &
+                """
+            }
+        }
         stage('SonarQube Analysis(SAST)') {
             when {
                 branch 'PR-*'
@@ -114,18 +126,18 @@ pipeline{
                 """
             }
         }
-        stage("Starting the Selenium Grid"){
-            when{
-                branch 'PR-*'
-            }
-            steps{
-                sh"""
-                    echo "starting the selenium standlone browser in docker container"
-                    docker run -d --net=host selenium/standalone-chrome
-                    echo "Started the browser successfully"
-                """
-            }
-        }
+       // stage("Starting the Selenium Grid"){
+         //   when{
+           //     branch 'PR-*'
+           // }
+            //steps{
+             //   sh"""
+              //      echo "starting the selenium standlone browser in docker container"
+               //     docker run -d --net=host selenium/standalone-chrome
+                 //   echo "Started the browser successfully"
+                //"""
+           // }
+       // }
         stage ("Container image scanning"){
             when {
                 branch 'PR-*'
@@ -143,18 +155,18 @@ pipeline{
                 """
             }
         }
-        stage("WebUI Test"){
-            when{
-                branch 'PR-*'
-            }
-            steps{
-                sh"""
-                    echo "Started the WEBUI Testing"
-                    pip3 install -r requirements.txt 
-                    pytest tests/
-                """
-            }
-        }
+       // stage("WebUI Test"){
+        //   when{
+          //      branch 'PR-*'
+           // }
+            //steps{
+              //  sh"""
+                //    echo "Started the WEBUI Testing"
+                 //   pip3 install -r requirements.txt 
+                   // pytest tests/
+                //"""
+           // }
+        //}
         stage("Destroying the infra"){
             when{
                 branch 'PR-*'
