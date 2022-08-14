@@ -110,7 +110,7 @@ pipeline{
                 sh"""
                     cd react-frontend
                     docker build -t react-app .
-                    docker run -it -p 3000:3000 react-app &
+                    docker run -it -p 3001:3000 react-app &
                 """
             }
         }
@@ -166,6 +166,7 @@ pipeline{
                     cd ..
                     cd main_page
                     docker-compose down
+                    docker ps -aq | xargs docker stop | xargs docker rm
                     echo "Docker container are successfully down"
                 """
                 } 
@@ -174,9 +175,7 @@ pipeline{
     post {
         always {
             echo 'The pipeline completed, So stopping all the containers'
-            sh """
-                docker ps -aq | xargs docker stop | xargs docker rm
-            """
+           
              always {
                 junit 'build/reports/**/*.xml'
             }
@@ -187,6 +186,9 @@ pipeline{
         failure {
             echo 'Build stage failed'
             error('Stopping early…')
+             sh """
+                docker ps -aq | xargs docker stop | xargs docker rm
+            """
         }
       }
 }
