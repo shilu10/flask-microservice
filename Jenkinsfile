@@ -30,10 +30,14 @@ pipeline{
             when {
                 branch 'PR-*'
             }
-            steps{       
-                withSonarQubeEnv("sonarqube_server") {
-                    sh "${tool 'SonarScanner'}/bin/sonar-scanner"
-                    }
+            steps{    
+                echo "Started the sonarqube analysis"
+                sh"""
+                    sleep 20s
+                """
+               // withSonarQubeEnv("sonarqube_server") {
+                 //   sh "${tool 'SonarScanner'}/bin/sonar-scanner"
+                  //  }
                 }        
             }
         
@@ -43,7 +47,7 @@ pipeline{
             }
             steps{
                 sh """
-                    started the dependency check..
+                    echo started the dependency check..
                     sleep 20s
                 """
                // sh """
