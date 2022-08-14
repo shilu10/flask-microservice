@@ -15,7 +15,7 @@ pipeline{
                 }
             }
 
-        stage("Starting RabbitMq Server"){
+        stage("Starting RabbitMQ Server"){
             when{
                 branch "PR-*"
             }
