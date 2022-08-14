@@ -3,7 +3,8 @@ import os
 print(os.getcwd())
 from main import *
 
-params = pika.URLParameters("amqps://bsphtlrq:n2ashT-9nP1K6s4SUzgeo9e_Fpbx5amz@gull.rmq.cloudamqp.com/bsphtlrq")
+#params = pika.URLParameters("amqps://bsphtlrq:n2ashT-9nP1K6s4SUzgeo9e_Fpbx5amz@gull.rmq.cloudamqp.com/bsphtlrq")
+params = pika.URLParameters("amqps://localhost")
 connection = pika.BlockingConnection(parameters=params)
 print(connection, "consumer is running!!!!")
 
