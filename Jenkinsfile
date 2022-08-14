@@ -198,10 +198,22 @@ pipeline{
            
              always {
                 junit 'build/reports/**/*.xml'
+                sh """
+                    docker ps -aq | xargs docker stop | xargs docker rm
+                """
             }
         }
         success {                   
             echo "Building and Testing of the application is successfull"
+            echo "So pushing the images to the docker hub"
+            sh"""
+                docker push 18bit048/flask-microservice:react-app
+                docker push 18bit048/flask-microservice:main_page_backend
+                docker push 18bit048/flask-microservice:main_page_queue
+                docker push 18bit048/flask-microservice:mysql
+                docker push 18bit048/flask-microservice:creation_page_queue1
+                docker push 18bit048/flask-microservice:creation_page_backend1
+            """
         }
         failure {
             echo 'Build stage failed'
