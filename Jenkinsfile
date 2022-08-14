@@ -180,7 +180,6 @@ pipeline{
             }
             steps{
                  sh """
-                    docker ps -aq | xargs docker stop | xargs docker rm
                     echo "Docker container are successfully down"
                 """
                 } 
@@ -201,11 +200,11 @@ pipeline{
             echo "Building and Testing of the application is successfull"
             echo "So pushing the images to the docker hub"
             sh"""
-                docker push 18bit048/flask-microservice/main_page_backend
-                docker push 18bit048/flask-microservice/react-app
-                docker push 18bit048/flask-microservice/main_page_queue
-                docker push 18bit048/flask-microservice/creation_page_queue1
-                docker push 18bit048/flask-microservice/creation_page_backend1
+                docker tag main_page_backend 18bit048/flask-microservice/main_page_backend
+                docker tag react-app 18bit048/flask-microservice/react-app
+                docker tag main_page_queue 18bit048/flask-microservice/main_page_queue
+                docker tag creation_page_queue1 18bit048/flask-microservice/creation_page_queue1
+                docker tag creation_page_backend1 18bit048/flask-microservice/creation_page_backend1
                 docker push react-app
                 docker push main_page_backend
                 docker push main_page_queue
