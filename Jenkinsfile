@@ -1,4 +1,3 @@
-
 pipeline{
     agent any
     stages{
@@ -181,11 +180,6 @@ pipeline{
             }
             steps{
                  sh """
-                    cd creation_page
-                    docker-compose down
-                    cd ..
-                    cd main_page
-                    docker-compose down
                     docker ps -aq | xargs docker stop | xargs docker rm
                     echo "Docker container are successfully down"
                 """
@@ -198,21 +192,25 @@ pipeline{
            
              always {
                 junit 'build/reports/**/*.xml'
-                sh """
-                    docker ps -aq | xargs docker stop | xargs docker rm
-                """
             }
         }
-        success {                   
+        success {    
+            when{
+                branch 'PR-*'
+            }               
             echo "Building and Testing of the application is successfull"
             echo "So pushing the images to the docker hub"
             sh"""
-                docker push 18bit048/flask-microservice:react-app
-                docker push 18bit048/flask-microservice:main_page_backend
-                docker push 18bit048/flask-microservice:main_page_queue
-                docker push 18bit048/flask-microservice:mysql
-                docker push 18bit048/flask-microservice:creation_page_queue1
-                docker push 18bit048/flask-microservice:creation_page_backend1
+                docker push 18bit048/flask-microservice/main_page_backend
+                docker push 18bit048/flask-microservice/react-app
+                docker push 18bit048/flask-microservice/main_page_queue
+                docker push 18bit048/flask-microservice/creation_page_queue1
+                docker push 18bit048/flask-microservice/creation_page_backend1
+                docker push react-app
+                docker push main_page_backend
+                docker push main_page_queue
+                docker push creation_page_queue1
+                docker push creation_page_backend1
             """
         }
         failure {
