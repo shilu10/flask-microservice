@@ -2,9 +2,9 @@ pipeline{
     agent any
     stages{
         stage("Tooling"){
-            when {
-                branch 'PR-*'
-            }
+           // when {
+            //    branch 'PR-*'
+           //}
             steps{
                 echo "Tooling versions: "
                 sh """
@@ -15,9 +15,9 @@ pipeline{
             }
 
         stage("Starting RabbitMQ Server"){
-            when{
-                branch "PR-*"
-            }
+         //   when{
+           //     branch "PR-*"
+            //}
             steps{
                 echo "Starting RabbitMQ server"
                 sh """
@@ -26,9 +26,9 @@ pipeline{
             }
         }
         stage('SonarQube Analysis(SAST)') {
-            when {
-                branch 'PR-*'
-            }
+           // when {
+             //   branch 'PR-*'
+           // }
             steps{    
                 echo "Started the sonarqube analysis"
                 sh"""
@@ -41,9 +41,9 @@ pipeline{
             }
         
         stage("Source Composition Analysis"){
-            when{
-                branch 'PR-*'
-            }
+           // when{
+            //    branch 'PR-*'
+           // }
             steps{
                 sh """
                     echo started the dependency check..
@@ -62,9 +62,9 @@ pipeline{
         }
 		
         stage ("Building and Testing Stages of Creation Page Microservice!!"){
-            when {
-                branch 'PR-*'
-            }
+          //  when {
+             //   branch 'PR-*'
+          //  }
             parallel{
                 stage("Build"){
                     steps{
@@ -93,9 +93,9 @@ pipeline{
         }
 
         stage ("Building and Testing Stages of Main Page Microservice!!"){
-            when {
-                branch 'PR-*'
-            }
+           // when {
+         //       branch 'PR-*'
+         //   }
             parallel{
                 stage("Build"){
                     steps{
@@ -122,9 +122,9 @@ pipeline{
             }
         }
         stage("Starting React App"){
-            when{
-                branch "PR-*"
-            }
+        //    when{
+          //      branch "PR-*"
+         //   }
             steps{
                 sh"""
                     cd react-frontend
@@ -146,9 +146,9 @@ pipeline{
            // }
        // }
         stage ("Container image scanning"){
-            when {
-                branch 'PR-*'
-            }
+          //  when {
+       //         branch 'PR-*'
+      //      }
             steps{
                 sh """
                     echo "Started the image scanning and writing to the files"
@@ -175,9 +175,9 @@ pipeline{
            // }
         //}
         stage("Destroying the infra"){
-            when{
-                branch 'PR-*'
-            }
+          //  when{
+          //      branch 'PR-*'
+        //    }
             steps{
                  sh """
                     echo "Docker container are successfully down"
@@ -185,9 +185,9 @@ pipeline{
                 } 
             } 
         stage("Pushing images to hub"){
-            when{
-                branch 'PR-*'
-            }
+        //    when{
+        //        branch 'PR-*'
+        //    }
             steps{
                 echo "So pushing the images to the docker hub"
                 sh"""
